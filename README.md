@@ -62,7 +62,7 @@ The system operates on a multi-stage image processing and machine learning pipel
 
 ```mermaid
 graph TD
-    A[Webcam Video Stream] -->|Capture Frame| B[BGR to Grayscale Conversion]
+    A[Webcam Video Stream] -->|Capture Frame| B[BGRRGB to Grayscale Conversion]
     B -->|Haar Cascade Classifier| C[Face Detection & ROI Cropping]
     C -->|Scale Alignment| D[Resize Face ROI to 100x100]
     D -->|Local Binary Patterns| E[LBP Texture Feature Extraction]
