@@ -77,14 +77,29 @@ graph TD
 
 ### 🔬 Core Methodology
 
-1.  **Face Localization**: OpenCV's Haar Cascade finds the bounding box of the face, isolating the Region of Interest (ROI) and ignoring non-biometric background noise (walls, objects, etc.).
-2.  **Texture Analysis (LBP)**: Real skin reflects light smoothly and exhibits micro-pore textures. Screens suffer from *Moire patterns*, bezel borders, pixelation, and glass reflections. Printed paper exhibits unique fibrous patterns, ink dispersion, and flat light reflections. The **Local Binary Pattern (LBP)** descriptor ($Radius = 2, Points = 16$) computes a binary code for each pixel's neighborhood to identify these microscopic texture anomalies:
-    $$\text{LBP}_{P, R}(x_c, y_c) = \sum_{p=0}^{P-1} s(g_p - g_c) 2^p$$
-    where $g_c$ is the gray value of the center pixel, $g_p$ represents neighboring pixels, and $s(x)$ is the threshold sign function:
-    $$s(x) = \begin{cases} 1 & x \ge 0 \\ 0 & x < 0 \end{cases}$$
-3.  **Histogram Binning**: The extracted uniform LBP patterns are compiled into a normalized $18$-bin feature vector, serving as a lighting-invariant signature of the facial surface.
-4.  **SVM Classification**: An RBF-kernel SVM maps the LBP features into a high-dimensional space where spoofing textures are highly separable from real skin:
-    $$K(\mathbf{x}, \mathbf{x}') = \exp(-\gamma \|\mathbf{x} - \mathbf{x}'\|^2)$$
+**1. Face Localization**
+
+OpenCV's Haar Cascade finds the bounding box of the face, isolating the Region of Interest (ROI) and ignoring non-biometric background noise (walls, objects, etc.).
+
+**2. Texture Analysis (LBP)**
+
+Real skin reflects light smoothly and exhibits micro-pore textures. Screens suffer from *Moiré patterns*, bezel borders, pixelation, and glass reflections. Printed paper exhibits unique fibrous patterns, ink dispersion, and flat light reflections. The **Local Binary Pattern (LBP)** descriptor ( $Radius = 2, Points = 16$ ) computes a binary code for each pixel's neighborhood to identify these microscopic texture anomalies:
+
+$$\text{LBP}_{P, R}(x_c, y_c) = \sum_{p=0}^{P-1} s(g_p - g_c) \cdot 2^p$$
+
+where $g_c$ is the gray value of the center pixel, $g_p$ represents neighboring pixels, and $s(x)$ is the threshold sign function:
+
+$$s(x) = \begin{cases} 1 & x \ge 0 \\\ 0 & x < 0 \end{cases}$$
+
+**3. Histogram Binning**
+
+The extracted uniform LBP patterns are compiled into a normalized $18$-bin feature vector, serving as a lighting-invariant signature of the facial surface.
+
+**4. SVM Classification**
+
+An RBF-kernel SVM maps the LBP features into a high-dimensional space where spoofing textures are highly separable from real skin:
+
+$$K(\mathbf{x}, \mathbf{x}') = \exp\left(-\gamma \|\mathbf{x} - \mathbf{x}'\|^2\right)$$
 
 ---
 
